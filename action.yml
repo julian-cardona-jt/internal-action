@@ -15,18 +15,18 @@ runs:
     - name: Create label
       shell: bash
       run: |
-        gh label create minor-version --description "a minor version is waiting for an upgrade" --color 0E8A16 --force
-        gh label create patch-version --description "a patch version is waiting for an upgrade" --color 1D76DB --force
+        gh label create patch-version --description "a patch version is waiting for an upgrade" --color 0E8A16 --force
+        gh label create minor-version --description "a minor version is waiting for an upgrade" --color 1D76DB --force
         gh label create major-version --description "a major version is waiting for an upgrade" --color D93F0B --force
         gh label create development-update --description "a development dependency is waiting for an upgrade" --color 0E8A16 --force
         gh label create production-update --description "a production dependency is waiting for an upgrade" --color B60205 --force
       env:
         PR_URL: ${{github.event.pull_request.html_url}}
         GITHUB_TOKEN: ${{inputs.GITHUB_TOKEN}}
-    - name: Label minor updates
-      if: ${{steps.dependabot-metadata.outputs.update-type == 'version-update:semver-minor'}}
+    - name: Label major updates
+      if: ${{steps.dependabot-metadata.outputs.update-type == 'version-update:semver-major'}}
       shell: bash
-      run: gh pr edit $PR_URL --add-label "minor-version"
+      run: gh pr edit $PR_URL --add-label "major-version"
       env:
         PR_URL: ${{github.event.pull_request.html_url}}
         GITHUB_TOKEN: ${{inputs.GITHUB_TOKEN}}
@@ -37,10 +37,10 @@ runs:
       env:
         PR_URL: ${{github.event.pull_request.html_url}}
         GITHUB_TOKEN: ${{inputs.GITHUB_TOKEN}}
-    - name: Label major updates
-      if: ${{steps.dependabot-metadata.outputs.update-type == 'version-update:semver-major'}}
+    - name: Label minor updates
+      if: ${{steps.dependabot-metadata.outputs.update-type == 'version-update:semver-minor'}}
       shell: bash
-      run: gh pr edit $PR_URL --add-label "major-version"
+      run: gh pr edit $PR_URL --add-label "minor-version"
       env:
         PR_URL: ${{github.event.pull_request.html_url}}
         GITHUB_TOKEN: ${{inputs.GITHUB_TOKEN}}
