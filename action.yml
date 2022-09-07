@@ -15,11 +15,11 @@ runs:
     - name: Create label
       shell: bash
       run: |
-        gh label create patch-version --description "a patch version is waiting for an upgrade" --color 0E8A16 --force
-        gh label create minor-version --description "a minor version is waiting for an upgrade" --color 1D76DB --force
-        gh label create major-version --description "a major version is waiting for an upgrade" --color D93F0B --force
-        gh label create development-update --description "a development dependency is waiting for an upgrade" --color 0E8A16 --force
-        gh label create production-update --description "a production dependency is waiting for an upgrade" --color B60205 --force
+        gh label create patch-version --description "a patch version is waiting for an upgrade" --color 0E8A16 --repo GITHUB_REPOSITORY --force
+        gh label create minor-version --description "a minor version is waiting for an upgrade" --color 1D76DB --repo GITHUB_REPOSITORY --force
+        gh label create major-version --description "a major version is waiting for an upgrade" --color D93F0B --repo GITHUB_REPOSITORY --force
+        gh label create development-update --description "a development dependency is waiting for an upgrade" --color 0E8A16 --repo GITHUB_REPOSITORY --force
+        gh label create production-update --description "a production dependency is waiting for an upgrade" --color B60205 --repo GITHUB_REPOSITORY --force
       env:
         PR_URL: ${{github.event.pull_request.html_url}}
         GITHUB_TOKEN: ${{inputs.GITHUB_TOKEN}}
