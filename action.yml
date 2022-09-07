@@ -4,6 +4,8 @@ inputs:
   GITHUB_TOKEN:  # id of input
     description: 'the github token'
     required: true
+  dependabot-metadata:
+    description: 'the metadata from the depenabot pull request'
 runs:
   using: "composite"
   steps:
@@ -12,30 +14,35 @@ runs:
       uses: dependabot/fetch-metadata@v1.3.3
     - name: Label minor updates
       if: ${{steps.dependabot-metadata.outputs.update-type == 'version-update:semver-minor'}}
+      shell: bash
       run: gh pr edit $PR_URL --add-label "minor-version"
       env:
         PR_URL: ${{github.event.pull_request.html_url}}
         GITHUB_TOKEN: ${{inputs.GITHUB_TOKEN}}
     - name: Label patch updates
       if: ${{steps.dependabot-metadata.outputs.update-type == 'version-update:semver-patch'}}
+      shell: bash
       run: gh pr edit $PR_URL --add-label "patch-version"
       env:
         PR_URL: ${{github.event.pull_request.html_url}}
         GITHUB_TOKEN: ${{inputs.GITHUB_TOKEN}}
     - name: Label major updates
       if: ${{steps.dependabot-metadata.outputs.update-type == 'version-update:semver-major'}}
+      shell: bash
       run: gh pr edit $PR_URL --add-label "major-version"
       env:
         PR_URL: ${{github.event.pull_request.html_url}}
         GITHUB_TOKEN: ${{inputs.GITHUB_TOKEN}}
     - name: Label development dependencies updates
       if: ${{steps.dependabot-metadata.outputs.dependency-type == 'direct:development'}}
+      shell: bash
       run: gh pr edit $PR_URL --add-label "development-update"
       env:
         PR_URL: ${{github.event.pull_request.html_url}}
         GITHUB_TOKEN: ${{inputs.GITHUB_TOKEN}}
     - name: Label development dependencies updates
       if: ${{steps.dependabot-metadata.outputs.dependency-type == 'direct:production'}}
+      shell: bash
       run: gh pr edit $PR_URL --add-label "production-update"
       env:
         PR_URL: ${{github.event.pull_request.html_url}}
